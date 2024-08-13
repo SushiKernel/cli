@@ -2,6 +2,8 @@ import os
 import subprocess
 from dotenv import load_dotenv
 
+load_dotenv()
+
 TOKEN_GITHUB = os.getenv('TOKEN_GITHUB', '')
 USER = "MoeKernel"
 REPO = "android_kernel_xiaomi_ginkgo"
