@@ -85,10 +85,10 @@ def clean_and_commit_makefile():
 
 def push_changes(branch):
     """Pushes the changes to the original repository."""
-    #remote_url = f'https://{USER}:{TOKEN_GITHUB}@github.com/{USER}/{REPO}.git'
-    #subprocess.run(["git", "remote", "set-url", "origin", remote_url])
-    #subprocess.run(["git", "config", "--global", "user.email", "akariondev@gmail.com"])
-    #subprocess.run(["git", "config", "--global", "user.name", "Akari Shoiya"])
+    remote_url = f'https://{USER}:{TOKEN_GITHUB}@github.com/{USER}/{REPO}.git'
+    subprocess.run(["git", "remote", "set-url", "origin", remote_url])
+    subprocess.run(["git", "config", "--global", "user.email", "akariondev@gmail.com"])
+    subprocess.run(["git", "config", "--global", "user.name", "Akari Shoiya"])
 
     result = run_command(f"git push origin {branch} --force")
     print(result)
