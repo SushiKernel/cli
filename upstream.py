@@ -109,10 +109,10 @@ if __name__ == "__main__":
     upstream_repo = "https://github.com/openela/kernel-lts.git"
     upstream_branch = "linux-4.14.y"
     branches = [
-        "fourteen",
         "fourteen_dynamic_noksu",
         "fourteen_dynamic",
         "without-ksu",
+        "fourteen",
         "openela",
         "susfs"
     ]
