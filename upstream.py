@@ -19,7 +19,8 @@ def clone_repo():
     """Clones the kernel repository."""
     remote_url = f'https://{USER}:{TOKEN_GITHUB}@github.com/{USER}/{REPO}.git'
     if not os.path.exists(REPO):
-        run_command(f"git clone {remote_url}")
+        result = run_command(f"git clone {remote_url}")
+        print(result)
     else:
         print(f"The repository {REPO} has already been cloned.")
 
