@@ -21,6 +21,7 @@ def clone_repo():
     if not os.path.exists(REPO):
         result = run_command(f"git clone {remote_url}")
         print(result)
+        os.chdir(REPO)
     else:
         print(f"The repository {REPO} has already been cloned.")
 
