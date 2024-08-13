@@ -1,4 +1,10 @@
+import os
 import subprocess
+from dotenv import load_dotenv
+
+TOKEN_GITHUB = os.getenv('TOKEN_GITHUB', '')
+USER = "MoeKernel"
+REPO = "scripts"
 
 def run_command(command):
     """Executa um comando no shell e retorna a saída."""
@@ -20,13 +26,13 @@ def merge_with_strategy(branch, file_specific_strategy=None):
     result = run_command(f"git merge -X ours upstream/{branch}")
 
     if result and "CONFLICT" in result:
-        print("Conflicts detected. Resolving automatically...")
+        print("Conflitos detectados. Resolvendo automaticamente...")
 
         # Verifica se há conflitos no arquivo específico (ex.: Makefile)
         if file_specific_strategy:
             for file, strategy in file_specific_strategy.items():
                 if file in run_command("git diff --name-only --diff-filter=U"):
-                    print(f"Conflict detected in {file}. Using the strategy '{strategy}'.")
+                    print(f"Conflito detectado em {file}. Usando a estratégia '{strategy}'.")
                     run_command(f"git checkout --{strategy} {file}")
                     run_command(f"git add {file}")
 
@@ -37,9 +43,9 @@ def merge_with_strategy(branch, file_specific_strategy=None):
                 run_command(f"git add {file}")
 
         run_command("git commit -m 'Resolve merge conflicts: preserving local changes'")
-        print("Conflicts resolved.")
+        print("Conflitos resolvidos.")
 
-    print(f"Merge of changes from upstream {branch} completed successfully.")
+    print(f"Merge das mudanças do upstream {branch} concluído com sucesso.")
 
 def clean_and_commit_makefile():
     """Remove a parte '-openela' da variável EXTRAVERSION no Makefile e comita as mudanças."""
@@ -57,29 +63,34 @@ def clean_and_commit_makefile():
                 file.write(line)
 
         if modified:
-            print("Makefile updated. Committing changes...")
+            print("Makefile atualizado. Comitando as mudanças...")
             run_command("git add Makefile")
             run_command('git commit -m "Remove -openela from EXTRAVERSION in Makefile"')
-            print("Makefile changes committed successfully.")
+            print("Mudanças no Makefile comitadas com sucesso.")
         else:
-            print("No Makefile changes required.")
+            print("Nenhuma alteração necessária no Makefile.")
     except FileNotFoundError:
-        print("Makefile not found. Check if the file is present.")
+        print("Makefile não encontrado. Verifique se o arquivo está presente.")
 
 def push_changes(branch):
     """Envia as mudanças para o repositório original."""
+    url_remoto = f'https://{USER}:{TOKEN_GITHUB}@github.com/{USER}/{REPO}.git'
+    subprocess.run(["git", "remote", "set-url", "origin", url_remoto])
+    subprocess.run(["git", "config", "--global", "user.email", "akariondev@gmail.com"])
+    subprocess.run(["git", "config", "--global", "user.name", "Akari Shoiya"])
+
     result = run_command(f"git push origin {branch}")
     if result:
-        print(f"Push changes to the branch {branch} successfully completed.")
+        print(f"Push das mudanças para o branch {branch} realizado com sucesso.")
     else:
-        print(f"Failed to push changes to branch {branch}.")
+        print(f"Falha ao enviar as mudanças para o branch {branch}.")
 
 def process_branches(upstream_repo, upstream_branch, branches):
     """Processa uma lista de branches para atualizar e enviar mudanças."""
     fetch_and_reset_upstream(upstream_repo, upstream_branch)
 
     for branch in branches:
-        print(f"Processing the branch {branch}...")
+        print(f"Processando o branch {branch}...")
         run_command(f"git checkout {branch}")
         merge_with_strategy(upstream_branch, file_specific_strategy={"Makefile": "theirs"})
         clean_and_commit_makefile()
@@ -98,4 +109,5 @@ if __name__ == "__main__":
         "without-ksu"
     ]
 
+    # Processar todas as branches definidas
     process_branches(upstream_repo, upstream_branch, branches)
