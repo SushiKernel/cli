@@ -119,5 +119,5 @@ if __name__ == "__main__":
         "susfs"
     ]
 
-    clone_repo()
+    #clone_repo()
     process_branches(upstream_repo, upstream_branch, branches)
