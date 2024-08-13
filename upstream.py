@@ -28,7 +28,7 @@ def fetch_and_reset_upstream(upstream_repo, branch):
     """Fetches updates from the upstream repository and applies them to the current branch."""
     run_command(f"git remote add upstream {upstream_repo} || true")
     run_command(f"git fetch upstream {branch}")
-    run_command(f"git reset --hard upstream/{branch}")
+    run_command(f"git reset --hard upstream/linux-4.14.y")
 
 def merge_with_strategy(branch, file_specific_strategy=None):
     """Merges the upstream branch with the specified strategy."""
