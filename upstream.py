@@ -91,6 +91,8 @@ def push_changes(branch):
     #subprocess.run(["git", "config", "--global", "user.name", "Akari Shoiya"])
 
     result = run_command(f"git push origin {branch} --force")
+    print(result)
+    
     if result:
         print(f"Pushed changes to branch {branch} successfully.")
     else:
