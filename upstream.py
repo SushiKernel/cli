@@ -90,7 +90,7 @@ def process_branches(upstream_repo, upstream_branch, branches):
     for branch in branches:
         print(f"Processing branch {branch}...")
         run_command(f"git checkout {branch}")
-        merge_with_strategy(upstream_branch, file_specific_strategy={"Makefile": "theirs"})
+        merge_with_strategy(upstream_branch)
         clean_and_commit_makefile()
         push_changes(branch)
 
