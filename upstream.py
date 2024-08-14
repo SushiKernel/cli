@@ -102,8 +102,8 @@ if __name__ == "__main__":
         "fourteen_dynamic",
         "without-ksu",
         "fourteen",
-        "openela",
-        "susfs"
+#        "openela",
+#        "susfs"
     ]
 
     #clone_repo()
