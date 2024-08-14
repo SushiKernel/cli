@@ -33,30 +33,15 @@ def fetch_and_reset_upstream(upstream_repo, branch):
     run_command(f"git fetch upstream {branch}")
     run_command(f"git reset --hard upstream/linux-4.14.y")
 
-def merge_with_strategy(branch, file_specific_strategy=None):
-    """Merges the upstream branch with the specified strategy."""
+def merge_with_strategy(branch):
+    """Merges the upstream branch with 'ours' strategy."""
     result = run_command(f"git merge -X ours upstream/{branch}")
 
     if result and "CONFLICT" in result:
-        print("Conflicts detected. Resolving automatically...")
-
-        if file_specific_strategy:
-            for file, strategy in file_specific_strategy.items():
-                if file in run_command("git diff --name-only --diff-filter=U"):
-                    print(f"Conflict detected in {file}. Using strategy '{strategy}'.")
-                    run_command(f"git checkout --{strategy} {file}")
-                    run_command(f"git add {file}")
-
-        unmerged_files = run_command("git diff --name-only --diff-filter=U")
-        if unmerged_files:
-            unmerged_files_list = set(unmerged_files.splitlines())
-            for file in unmerged_files_list:
-                run_command(f"git add {file}")
-
-        run_command("git commit -m 'Resolve merge conflicts: preserving local changes'")
-        print("Conflicts resolved.")
-
-    print(f"Merge of upstream changes from {branch} completed successfully.")
+        print("Conflicts detected but preserved local changes with 'ours' strategy.")
+        run_command("git commit -m 'Resolved conflicts: preserved local changes using ours'")
+    else:
+        print(f"Merge of upstream changes from {branch} completed successfully.")
 
 def clean_and_commit_makefile():
     """Removes the '-openela' part from the EXTRAVERSION variable in the Makefile and commits the changes."""
