@@ -155,7 +155,7 @@ def commit_hash_push():
         "fourteen",
         "fourteen_dynamic_noksu",
         "fourteen_dynamic",
-        "without-ksu"
+        "noksu"
     ]
 
     for branch in branches:
@@ -185,7 +185,7 @@ def commit_hashes_push():
         "fourteen",
         "fourteen_dynamic_noksu",
         "fourteen_dynamic",
-        "without-ksu"
+        "noksu"
     ]
 
     for branch in branches:
